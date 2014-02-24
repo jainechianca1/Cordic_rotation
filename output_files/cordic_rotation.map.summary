@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Thu Jan 23 19:31:45 2014
+Quartus II 32-bit Version : 13.0.0 Build 156 04/24/2013 SJ Web Edition
+Revision Name : cordic_rotation
+Top-level Entity Name : cordic_rotation
+Family : Cyclone II
+Total logic elements : 2,089
+    Total combinational functions : 2,006
+    Dedicated logic registers : 577
+Total registers : 577
+Total pins : 81
+Total virtual pins : 0
+Total memory bits : 0
+Embedded Multiplier 9-bit elements : 0
+Total PLLs : 0

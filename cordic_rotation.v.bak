@@ -1,0 +1,66 @@
+module cordic_rotation (clock, angle, Xin, Yin, Xout, Yout);
+	input clock;
+	input [0:15] angle, Xin, Yin;
+	output [0:15] Xout, Yout;
+	
+	
+wire [15:0] atan [0:11] ;
+	assign atan[00] = 16'b0010110100000000 ; // Atan de 2^0
+	assign atan[01] = 16'b0001101000111000 ; // Atan de 2^-1
+	assign atan[02] = 16'b0000111000000011 ; // Atan de 2^-2
+	assign atan[03] = 16'b0000011100001100 ; // Atan de 2^-3
+	assign atan[04] = 16'b0000001100111001 ; // Atan de 2^-4
+	assign atan[05] = 16'b0000000101001100 ; // Atan de 2^-5
+	assign atan[06] = 16'b0000000001011001 ; // Atan de 2^-6
+	assign atan[07] = 16'b0000000000101100 ; // Atan de 2^-7
+	assign atan[08] = 16'b0000000000010110 ; // Atan de 2^-8
+	assign atan[09] = 16'b0000000000001011 ; // Atan de 2^-9
+	assign atan[10] = 16'b0000000000000101 ; // Atan de 2^-10
+	assign atan[11] = 16'b0000000000000010 ; // Atan de 2^-11
+	
+	
+
+	
+	reg [15:0] X [0:11] ;
+	reg [15:0] Y [0:11] ;
+	reg [15:0] Z [0:11] ;
+	
+
+genvar i;
+generate 
+for(i=0; i<11; i=i+1)
+	begin : cordic
+//	wire z_sign;// Declara-se uma var como wire quando ela nao eh nem valor de entrada nem de sai­da ou quando ela realizar a conexao entre dois blocos.
+	always @(posedge clock)
+      begin
+			if(Z[i][15] == 0) 
+			begin
+			  X[i+1] <= X[i] - Y[i] >> i ;
+			  Y[i+1] <= Y[i] + X[i] >> i ;
+			  Z[i+1] <= Z[i] - atan[i] ;
+			end
+			else 
+			begin
+				X[i+1] <= X[i] + Y[i] >> i ;
+				Y[i+1] <= Y[i] - X[i] >> i ;
+				Z[i+1] <= Z[i] + atan[i] ;
+			end
+      end
+			
+		
+	end
+
+endgenerate
+always @ (posedge clock)
+begin
+	   X[0] <= Xin;
+		Y[0] <= Yin;
+		Z[0] <= angle;
+end
+
+	
+	assign Xout = X[i] ;
+	assign Yout = Y[i] ;
+		
+endmodule
+	
